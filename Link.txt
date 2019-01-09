@@ -1,0 +1,8 @@
+http://bcpd.clanservers.com/
+
+ftp info
+-----------
+Host: ftp.bcpd.clanservers.com
+Username: c1411411
+password: Cgraves123
+Port: 21

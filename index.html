@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Central Office | Phone Directory</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+	<link href="style.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="https://cdn.blockspring.com/blockspring.js"></script>
+  <script src='javascript.js'> </script> 
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-database.js"></script>
+  <link rel="shortcut icon" type="image/x-icon" href="./img/Home.ico" />
+  <script src="index.js"></script>
+</head>
+<body>
+
+<div id="Top">
+  
+</div>
+<div id="MiddleTop">
+  <h1 id="TitleTop"></a><a href="http://www.barren.k12.ky.us/"><img src="./img/logo.png" alt="Logo" id="TopLogo"/></a><a href="http://www.barren.k12.ky.us/" id="TitleTop">Barren County School District</a></h1>
+</div>
+<div id="BottomTop">
+
+</div>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="index.html">Central Office <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Schools
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="Schools/bchs.html">Barren County High</a>
+          <a class="dropdown-item" href="Schools/ta.html">Trojan Academy</a>
+					<a class="dropdown-item" href="Schools/bcms.html">Barren County Middle School</a>
+					<a class="dropdown-item" href="Schools/at.html">Austin Tracy</a>
+					<a class="dropdown-item" href="Schools/Eastern.html">Eastern</a>
+					<a class="dropdown-item" href="Schools/Hiseville.html">Hiseville</a>
+					<a class="dropdown-item" href="Schools/nj.html">North Jackson</a>
+					<a class="dropdown-item" href="Schools/pc.html">Park City</a>
+					<a class="dropdown-item" href="Schools/rc.html">Red Cross</a>
+					<a class="dropdown-item" href="Schools/th.html">Temple Hill</a>
+					<a class="dropdown-item" href="Schools/atc.html">ATC</a>
+					<a class="dropdown-item" href="Schools/ctc.html">CTC</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Other Staff</a>
+        </div>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="myInput" placeholder="Search" onkeyup="filter()" aria-label="Search">
+      <button class="btn my-2 my-sm-0" id="SearchBTN" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+<table id="myTable">
+<thead>
+  <tr>
+    <th>Last</th>
+    <th>First</th>
+    <th>Room #</th>
+    <th>Building</th>
+    <th>Extension</th>
+  </tr>
+  </thead>
+  <tbody id="myTableBody">
+  <tr>
+  </tr>
+  </tbody>
+</table>
+<script>
+    
+    var num = 0;
+    var n = num.toString();
+    var FName;
+    var LName;
+    var Room;
+    var Building;
+    var Extention;
+    var table = document.getElementById("myTableBody");
+    var row = table.insertRow(1);
+    var cell1;
+    var cell2;
+    var cell3;
+    var cell4;
+    var cell5;
+    
+
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBBPOdrWkJFBhopBsaRczi12hibJn19eRQ",
+      authDomain: "bcpd-cccc0.firebaseapp.com",
+      databaseURL: "https://bcpd-cccc0.firebaseio.com",
+      projectId: "bcpd-cccc0",
+      storageBucket: "bcpd-cccc0.appspot.com",
+      messagingSenderId: "37680251991"
+    };
+    firebase.initializeApp(config);
+
+      var FirstTag = document.getElementById('First')
+      var LastTag = document.getElementById('Last')
+      var RoomTag = document.getElementById('Room')
+      var BuildingTag = document.getElementById('Building')
+      var ExtentionTag = document.getElementById('Extention')
+
+      var rowId = 0;
+
+    loop()
+    function loop() {
+      num = num + 1;
+      n = num.toString();
+      row = table.insertRow(num);
+      cell1 = row.insertCell(0);
+      cell2 = row.insertCell(1);
+      cell3 = row.insertCell(2);
+      cell4 = row.insertCell(3);
+      cell5 = row.insertCell(4);
+
+      FName = firebase.database().ref().child('0').child('First');
+      LName = firebase.database().ref().child(n).child('Last');
+      Room = firebase.database().ref().child(n).child('Room');
+      Building = firebase.database().ref().child(n).child('Building');
+      Extention = firebase.database().ref().child(n).child('Extention');
+
+      FName.on('value', snap=> cell2.innerText = snap.val());
+      LName.on('value', snap=> cell1.innerText = snap.val());
+      Room.on('value', snap=> cell3.innerText = snap.val());
+      Building.on('value', snap=> cell4.innerText = snap.val());
+      Extention.on('value', snap=> cell5.innerText = snap.val());
+
+
+      var FNCell = FName.on('value', snap=> cell5.innerText = snap.val());
+      FName.on('value', snap=> FNCell = snap.val());
+      table.innerHTML = table.innerHTML + "<tr>" + "<td>" + FNCell + "</td>" + "</tr>"
+
+
+  };
+
+</script>
+<!--Made by Collin Graves, Elijah Anderson, and Joshua Klein-->
+<!--Barren County District Phone Directory-->
+</html>
